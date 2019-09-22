@@ -1,0 +1,54 @@
+version: "2"
+
+services:
+  php:
+    depends_on:
+      - mysql
+    build:
+      context: ./docker/php
+    working_dir: /var/www/laravel
+    container_name: php
+    restart: always
+    volumes:
+      - ./website:/var/www/laravel
+    networks:
+      - laravel
+  nginx:
+    depends_on:
+      - mysql
+    build:
+      context: ./docker/nginx
+    container_name: nginx
+    restart: always
+    working_dir: /var/www/laravel
+    ports:
+      - 80:80
+    volumes_from:
+      - php
+    networks:
+      - laravel
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    restart: always
+    networks:
+      - laravel
+    ports:
+      - 3306:3306
+    volumes:
+      - ./docker/mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+  phpmyadmin:
+    depends_on:
+      - mysql
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    restart: always
+    ports:
+      - 81:80
+    networks:
+      - laravel
+
+networks:
+  laravel:
