@@ -47,6 +47,7 @@ services:
       - 81:80
     networks:
       - laravel
-
+    environment: 
+      PMA_HOST: mysql
 networks:
   laravel:
