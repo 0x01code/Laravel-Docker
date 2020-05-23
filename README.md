@@ -1,14 +1,53 @@
 # Laravel-Docker
 Laravel in Dcoker Compose
 
-Run DockerCompose
-```docker-command
-docker-compose up
-```
+# Setup
 
-# Mysql and Phpmyadmin
+Copy File Env  
+`
+cp .env-example .env
+`  
+`
+cp src/.env-example .env
+`
+
+Setup env  
+`
+vim .env
+`  
+`
+vim src/.env
+`  
+
+# Run Docker  
+RUN Mode Develop  
+`
+docker-compose -f docker-compose-dev.yml up -d
+`  
+
+RUN Mode Production  
+`
+docker-compose up -d
+`
+
+# Exec Docker
+`
+docker exec -it php bash
+`  
+
+# Dependencies Install
+`
+composer install
+`  
+`
+npm install
+`  
+
+# Setup Laravel
+Generate Key  
+`
+php artisan key:generate
+`
+
+# Phpmyadmin For Dev Mode
 http://localhost:81
-
-Username: root
-
-Password: 123456
