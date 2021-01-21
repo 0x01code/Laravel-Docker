@@ -1,4 +1,4 @@
-version: "3.7"
+version: "3.8"
 
 networks:
   website:
@@ -11,10 +11,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./src:/var/www/html
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
-      - ./logs:/var/log/nginx
+      - ./data/logs:/var/log/nginx
     depends_on:
       - php
       - mysql
@@ -22,12 +19,12 @@ services:
       - website
 
   mysql:
-    image: mysql:5.7
+    image: mariadb:10.5.8
     container_name: mysql
     restart: unless-stopped
     tty: true
     volumes:
-      - ./mysql:/var/lib/mysql
+      - ./data/mysql:/var/lib/mysql
     environment:
       MYSQL_DATABASE: ${DB_DATABASE}
       MYSQL_USER: ${DB_USERNAME}
@@ -39,13 +36,11 @@ services:
   php:
     build:
       context: .
-      dockerfile: ./php/prod/Dockerfile
+      dockerfile: ./.docker/php/prod/Dockerfile
     container_name: php
     restart: unless-stopped
     volumes:
       - ./src:/var/www/html
-      - ./php/prod/local.ini:/usr/local/etc/php/conf.d/local.ini
-    ports:
-      - "9000:9000"
+      - ./.docker/php/prod/local.ini:/usr/local/etc/php/conf.d/local.ini
     networks:
       - website
