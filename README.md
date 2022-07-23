@@ -20,34 +20,24 @@ vim src/.env
 `  
 
 # Run Docker  
-RUN Mode Develop  
-`
-docker-compose -f docker-compose-dev.yml up -d
-`  
-
-RUN Mode Production  
 `
 docker-compose up -d
 `
 
-# Exec Docker
-`
-docker exec -it php bash
-`  
 
 # Dependencies Install
 `
-composer install
+docker-compose run composer install
 `  
 `
-npm install
+docker-compose run npm install
 `  
 
 # Setup Laravel
 Generate Key  
 `
-php artisan key:generate
+docker-compose run artisan key:generate
 `
 
-# Phpmyadmin For Dev Mode
+# Phpmyadmin 
 http://localhost:81
